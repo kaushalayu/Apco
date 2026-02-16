@@ -45,7 +45,7 @@ section {
   padding: 70px 0;
 }
 .custom {
-  padding: 5px 0 !important;
+  padding: 0px 0 !important;
 }
 
 /* ============ Typography ============ */
@@ -126,7 +126,9 @@ section {
 .scroll-animate {
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .scroll-animate.animate-in {
@@ -137,7 +139,9 @@ section {
 .scroll-animate-left {
   opacity: 0;
   transform: translateX(-50px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .scroll-animate-left.animate-in {
@@ -148,7 +152,9 @@ section {
 .scroll-animate-right {
   opacity: 0;
   transform: translateX(50px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .scroll-animate-right.animate-in {
@@ -259,7 +265,7 @@ header.scrolled {
 nav {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 15px 30px;
+  padding: 8px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -500,6 +506,7 @@ nav {
   position: relative;
   height: 650px;
   overflow: hidden;
+  background: #000;
 }
 
 .slide {
@@ -507,11 +514,22 @@ nav {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 1s ease-in-out;
+  transform: scale(1.2) rotate(3deg);
+  transition: all 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  filter: blur(10px) brightness(0.7);
 }
 
 .slide.active {
   opacity: 1;
+  transform: scale(1) rotate(0deg);
+  filter: blur(0) brightness(1);
+  z-index: 2;
+}
+
+.slide.prev {
+  opacity: 0;
+  transform: scale(0.8) translateX(-100%) rotate(-3deg);
+  filter: blur(15px);
 }
 
 .slide-content {
@@ -526,8 +544,9 @@ nav {
   text-align: center;
   background: linear-gradient(
     135deg,
-    rgba(30, 58, 95, 0.2),
-    rgba(30, 58, 95, 0.1)
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(30, 58, 95, 0.4) 50%,
+    rgba(0, 0, 0, 0.5) 100%
   );
 }
 
@@ -535,23 +554,52 @@ nav {
   color: white;
   max-width: 900px;
   padding: 0 30px;
-  animation: fadeInUp 0.8s ease-out;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+
+.slide.active .slide-text {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.4s;
 }
 
 .slide-text h2 {
   font-family: "Poppins", sans-serif;
   font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  letter-spacing: 2px;
+  font-weight: 900;
+  margin-bottom: 20px;
+  letter-spacing: 3px;
   text-transform: uppercase;
+  background: linear-gradient(45deg, #fff, #ffd700, #fff);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
 }
 
 .slide-text h3 {
   font-size: 1.6rem;
   font-weight: 400;
-  opacity: 0.95;
-  letter-spacing: 1px;
+  opacity: 0;
+  letter-spacing: 2px;
+  color: #f0f0f0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.slide.active .slide-text h3 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.7s;
 }
 
 .slider-controls {
@@ -560,23 +608,47 @@ nav {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 12px;
+  gap: 15px;
   z-index: 10;
 }
 
 .slider-dot {
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-dot::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffd700;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.4s ease;
 }
 
 .slider-dot.active {
-  background: var(--secondary-color);
-  width: 30px;
-  border-radius: 6px;
+  background: #ffd700;
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  transform: scale(1.3);
+}
+
+.slider-dot.active::before {
+  transform: scale(1);
+}
+
+.slider-dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
 }
 
 /* ============ Buttons ============ */
@@ -1637,7 +1709,11 @@ footer {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  background: linear-gradient(
+    135deg,
+    var(--secondary-color),
+    var(--primary-color)
+  );
   border-radius: 10px;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -1658,7 +1734,11 @@ footer {
   width: 80px;
   height: 80px;
   margin: 0 auto 25px;
-  background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+  background: linear-gradient(
+    135deg,
+    var(--secondary-color),
+    var(--accent-color)
+  );
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1721,7 +1801,11 @@ footer {
   left: 0;
   width: 100%;
   height: 5px;
-  background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+  background: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--secondary-color)
+  );
   transform: scaleX(0);
   transition: transform 0.4s ease;
 }

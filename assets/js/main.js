@@ -38,11 +38,27 @@ const dots = document.querySelectorAll(".slider-dot");
 function showSlide(n) {
   if (slides.length === 0) return;
 
-  slides.forEach((slide) => slide.classList.remove("active"));
+  // Remove prev class from all slides
+  slides.forEach((slide) => {
+    slide.classList.remove("active");
+    slide.classList.remove("prev");
+  });
   dots.forEach((dot) => dot.classList.remove("active"));
 
+  // Add prev class to current slide before changing
+  if (slides[currentSlide]) {
+    slides[currentSlide].classList.add("prev");
+  }
+
+  // Update current slide index
   currentSlide = (n + slides.length) % slides.length;
 
+  // Remove prev class after transition
+  setTimeout(() => {
+    slides.forEach((slide) => slide.classList.remove("prev"));
+  }, 1200);
+
+  // Add active class to new slide
   slides[currentSlide].classList.add("active");
   if (dots[currentSlide]) {
     dots[currentSlide].classList.add("active");
