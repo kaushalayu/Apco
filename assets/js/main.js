@@ -270,13 +270,13 @@ const scrollAnimateObserver = new IntersectionObserver(
   {
     threshold: 0.1,
     rootMargin: "0px 0px -50px 0px",
-  }
+  },
 );
 
 document.addEventListener("DOMContentLoaded", () => {
   // Add scroll animation classes to sections
   const sections = document.querySelectorAll(
-    "section:not(.hero-slider), .service-card, .gallery-item-new, .team-member-card, .faq-item"
+    "section:not(.hero-slider), .service-card, .gallery-item-new, .team-member-card, .faq-item",
   );
   sections.forEach((section) => {
     section.classList.add("scroll-animate");
@@ -284,14 +284,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Add left/right animations for specific elements
-  const leftElements = document.querySelectorAll(".about-left, .faq-image-side");
+  const leftElements = document.querySelectorAll(
+    ".about-left, .faq-image-side",
+  );
   leftElements.forEach((el) => {
     el.classList.add("scroll-animate-left");
     scrollAnimateObserver.observe(el);
   });
 
   const rightElements = document.querySelectorAll(
-    ".about-right, .faq-questions-side"
+    ".about-right, .faq-questions-side",
   );
   rightElements.forEach((el) => {
     el.classList.add("scroll-animate-right");
@@ -316,12 +318,49 @@ const lazyLoadObserver = new IntersectionObserver(
   },
   {
     rootMargin: "50px",
-  }
+  },
 );
 
 document.addEventListener("DOMContentLoaded", () => {
   const lazyImages = document.querySelectorAll("img[data-src]");
   lazyImages.forEach((img) => {
     lazyLoadObserver.observe(img);
+  });
+});
+
+// ============ Projects Map Pins (click -> tooltip) ============
+document.addEventListener("DOMContentLoaded", function () {
+  const pins = document.querySelectorAll(".map-pin");
+  if (!pins || pins.length === 0) return;
+
+  pins.forEach((pin) => {
+    // create tooltip from data-text
+    const txt = pin.getAttribute("data-text");
+    if (txt) {
+      const tooltip = document.createElement("div");
+      tooltip.className = "pin-tooltip";
+      tooltip.innerHTML = txt;
+      pin.appendChild(tooltip);
+    }
+
+    pin.addEventListener("click", function (e) {
+      e.stopPropagation();
+      // close other pins
+      pins.forEach((p) => {
+        if (p !== pin) p.classList.remove("active");
+      });
+      // toggle this pin
+      pin.classList.toggle("active");
+    });
+  });
+
+  // close tooltips when clicking elsewhere
+  document.addEventListener("click", function () {
+    pins.forEach((p) => p.classList.remove("active"));
+  });
+
+  // close on escape
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") pins.forEach((p) => p.classList.remove("active"));
   });
 });

@@ -339,7 +339,7 @@ nav {
 }
 
 .main-nav > li > a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -768,6 +768,329 @@ nav {
 .about-right {
   position: relative;
   height: 500px;
+}
+
+/* ============ Projects Map Section ============ */
+.projects-map-section {
+  position: relative;
+  background: #fff;
+  padding: 100px 0;
+  overflow: hidden;
+  border: none;
+}
+
+/* Background Image with Mask */
+.projects-map-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 65%;
+  height: 100%;
+  background-image: url("../img/porfolios-01.jpg");
+  background-size: cover;
+  background-position: center;
+  /* Create a fade effect to the right */
+  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+  opacity: 0.9;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.projects-map-grid {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.map-info {
+  padding: 10px 0;
+}
+
+.map-info .section-title {
+  text-align: left;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #000;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  padding-bottom: 0;
+  letter-spacing: -0.5px;
+}
+
+.map-info .section-title::after {
+  display: none;
+}
+
+.map-info .section-subtitle {
+  text-align: left;
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 400;
+  max-width: 100%;
+  line-height: 1.5;
+}
+
+.link-readmore {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fbb03b;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 35px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: transform 0.3s;
+}
+
+.link-readmore i {
+  font-size: 1.2rem;
+}
+
+.link-readmore:hover {
+  transform: translateX(5px);
+}
+
+.map-links {
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.map-links li {
+  margin-bottom: 12px;
+}
+
+.map-links a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #000;
+  padding-bottom: 2px;
+  transition: all 0.3s;
+}
+
+.map-links a:hover {
+  color: #fbb03b;
+  border-color: #fbb03b;
+}
+
+/* Map Area */
+.projects-map {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background: transparent;
+  box-shadow: none;
+  margin-top: 0;
+  overflow: visible;
+}
+
+.map-overlay {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center right;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Pins */
+.map-pin {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbb03b 0%, #d48f22 100%);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 3px rgba(251, 176, 59, 0.4);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400; /* Regular font for + */
+  font-size: 1.4rem;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: auto;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  outline: none;
+  padding-bottom: 2px; /* Center the + vertically */
+}
+
+.map-pin:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 0 0 6px rgba(251, 176, 59, 0.2);
+}
+
+/* Tooltip & Lines */
+.pin-tooltip {
+  position: absolute;
+  background: #fff;
+  color: #333;
+  padding: 12px 18px;
+  border-radius: 4px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  min-width: 180px;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 20;
+  pointer-events: none;
+  font-weight: 500;
+  border: 1px solid #eee;
+}
+
+.map-pin.active .pin-tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Specific styling for Pin 1 (UP area) to match image "static" look */
+
+.map-pin.pin-1::before {
+  /* Dotted line connecting pin to tooltip */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 40px; /* Length of line */
+  height: 2px;
+  border-top: 2px dotted #aaa;
+  z-index: 5;
+  transform-origin: left;
+  transform: rotate(-20deg); /* Angle upwards slightly */
+}
+
+.map-pin.pin-1 .pin-tooltip {
+  /* Always visible for Pin 1 */
+  opacity: 1;
+  visibility: visible;
+  /* Position relative to pin */
+  top: -40px;
+  left: calc(100% + 40px);
+  transform: none;
+  margin: 0;
+}
+
+/* Other pins tooltips */
+.map-pin:not(.pin-1) .pin-tooltip {
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.map-pin:not(.pin-1) .pin-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .projects-map-section {
+    padding: 60px 0;
+  }
+
+  .projects-map-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .projects-map-section::before {
+    width: 100%;
+    /* Fade from bottom to top on mobile */
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    opacity: 0.6;
+  }
+
+  .map-info {
+    text-align: center;
+    position: relative;
+    z-index: 5;
+    order: 1; /* Map below text? Or text above map */
+    margin-bottom: 20px;
+  }
+
+  .map-info .section-title,
+  .map-info .section-subtitle {
+    text-align: center;
+  }
+
+  .link-readmore {
+    margin: 0 auto 30px;
+  }
+
+  .projects-map {
+    height: 400px;
+    order: 2;
+  }
+
+  /* Adjust Pin 1 tooltip on mobile to not go off screen */
+  .map-pin.pin-1::before {
+    display: none;
+  }
+
+  .map-pin.pin-1 .pin-tooltip {
+    top: auto;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .projects-map {
+    height: 350px;
+  }
+
+  .map-info .section-title {
+    font-size: 1.8rem;
+  }
+
+  .map-pin {
+    width: 28px;
+    height: 28px;
+    font-size: 1.2rem;
+  }
+
+  .pin-tooltip {
+    display: none; /* Hide tooltips on very small screens unless active? */
+  }
+  .map-pin.active .pin-tooltip,
+  .map-pin.pin-1 .pin-tooltip {
+    display: block;
+    font-size: 0.75rem;
+    padding: 8px;
+    min-width: auto;
+  }
 }
 
 .about-images-container {
