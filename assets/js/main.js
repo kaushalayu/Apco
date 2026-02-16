@@ -151,11 +151,15 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, observerOptions);
 
-// Observe stats section
+// Observe stats sections
 document.addEventListener("DOMContentLoaded", () => {
   const statsSection = document.querySelector(".stats-section");
+  const statsCounterSection = document.querySelector(".stats-counter-section");
   if (statsSection) {
     observer.observe(statsSection);
+  }
+  if (statsCounterSection) {
+    observer.observe(statsCounterSection);
   }
 });
 
@@ -237,3 +241,71 @@ if (blogSlides.length > 0) {
     showBlogSlide(currentBlogSlide + 1);
   }, 6000);
 }
+
+// ============ Scroll Animations ============
+const scrollAnimateObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate-in");
+      }
+    });
+  },
+  {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px",
+  }
+);
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Add scroll animation classes to sections
+  const sections = document.querySelectorAll(
+    "section:not(.hero-slider), .service-card, .gallery-item-new, .team-member-card, .faq-item"
+  );
+  sections.forEach((section) => {
+    section.classList.add("scroll-animate");
+    scrollAnimateObserver.observe(section);
+  });
+
+  // Add left/right animations for specific elements
+  const leftElements = document.querySelectorAll(".about-left, .faq-image-side");
+  leftElements.forEach((el) => {
+    el.classList.add("scroll-animate-left");
+    scrollAnimateObserver.observe(el);
+  });
+
+  const rightElements = document.querySelectorAll(
+    ".about-right, .faq-questions-side"
+  );
+  rightElements.forEach((el) => {
+    el.classList.add("scroll-animate-right");
+    scrollAnimateObserver.observe(el);
+  });
+});
+
+// ============ Lazy Loading Images ============
+const lazyLoadObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        if (img.dataset.src) {
+          img.src = img.dataset.src;
+          img.classList.add("loaded");
+          img.removeAttribute("data-src");
+          lazyLoadObserver.unobserve(img);
+        }
+      }
+    });
+  },
+  {
+    rootMargin: "50px",
+  }
+);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lazyImages = document.querySelectorAll("img[data-src]");
+  lazyImages.forEach((img) => {
+    lazyLoadObserver.observe(img);
+  });
+});
